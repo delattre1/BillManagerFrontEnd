@@ -1,4 +1,5 @@
 import Bill from "./components/Bill/";
+import SignupForm from "./components/Forms/";
 import "./App.css";
 import axios from "axios";
 import { useEffect, useState } from "react";
@@ -16,6 +17,7 @@ function App() {
   
   return (
     <div>
+      <SignupForm></SignupForm>
       <Bill bills={bills}></Bill>
     </div>
   )
