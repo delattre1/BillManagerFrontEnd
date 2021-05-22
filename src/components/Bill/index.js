@@ -8,6 +8,18 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Paper from '@material-ui/core/Paper';
+import axios from 'axios';
+import { useEffect, useState } from "react";
+
+import IconButton from '@material-ui/core/IconButton';
+import DeleteIcon from '@material-ui/icons/Delete';
+
+function convertDate(date) {
+  var ano  = date.split("-")[0];
+  var mes  = date.split("-")[1];
+  var dia  = date.split("-")[2];
+  return `${dia}/${mes}/${ano}`
+}
 
 const useStyles = makeStyles({
   table: {
@@ -15,19 +27,20 @@ const useStyles = makeStyles({
   },
 });
 
-function createData(name, calories, fat, carbs, protein) {
-  return { name, calories, fat, carbs, protein };
+function removeBill(id) {
+  console.log(`remove ${id}`);
 }
-
-const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 export default function BasicTable() {
+  const [bills, setBills] = useState([]);
+  useEffect(() => {
+  axios
+    .get('http://127.0.0.1:8000/api/bills/')
+    .then((res) => {
+      setBills(res.data)
+    })
+  }, []);
+
+  console.log(bills);
   const classes = useStyles();
 
   return (
@@ -35,23 +48,29 @@ export default function BasicTable() {
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Dessert (100g serving)</TableCell>
-            <TableCell >Calories</TableCell>
-            <TableCell >Fat&nbsp;(g)</TableCell>
-            <TableCell >Carbs&nbsp;(g)</TableCell>
-            <TableCell >Protein&nbsp;(g)</TableCell>
+            <TableCell>Vencimento</TableCell>
+            <TableCell>Empresa   </TableCell>
+            <TableCell>Valor     </TableCell>
+            <TableCell>Código    </TableCell>
+            <TableCell>Boleto    </TableCell>
+            <TableCell>Remover   </TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <TableRow key={row.name}>
+          {bills.map((row) => (
+            <TableRow key={row.id}>
               <TableCell component="th" scope="row">
-                {row.name}
+                {convertDate(row.vencimento)}
               </TableCell>
-              <TableCell> {row.calories}</TableCell>
-              <TableCell> {row.fat}</TableCell>
-              <TableCell> {row.carbs}</TableCell>
-              <TableCell> {row.protein}</TableCell>
+              <TableCell>   {row.empresa}</TableCell>
+              <TableCell>R$ {row.valor}</TableCell>
+              <TableCell>   {row.codigoPagamento}</TableCell>
+              <TableCell>   {row.boleto}</TableCell>
+              <TableCell>
+              <IconButton aria-label="delete" >
+                <DeleteIcon onClick={(e) => removeBill(row.id, e)}/>
+              </IconButton>
+            </TableCell>
             </TableRow>
           ))}
         </TableBody>

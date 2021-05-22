@@ -1,11 +1,13 @@
 import React from 'react';
 import './form.css';
 import { Formik, Field, Form, ErrorMessage } from 'formik';
-import { TextField, Button } from '@material-ui/core';
+import { TextField, Button, Input } from '@material-ui/core';
 import InputMask from 'react-input-mask';
 import axios from 'axios';
 
-const SignupForm = () => {
+
+
+const BillForm = () => {
   function postBill(bill) {
     axios
       .post('http://127.0.0.1:8000/api/bills/', bill)
@@ -15,7 +17,9 @@ const SignupForm = () => {
   };
 
   const CustomInputComponent = (props) => (
-    <InputMask mask="9999-99-99" {...props}/>
+    <InputMask mask="99/99/9999" value={props.value} onChange={props.onChange}>
+      {(inputProps) => <Input placeholder={props.placeholder} {...inputProps}/>}
+    </InputMask>
   );
 
  return (
@@ -34,7 +38,6 @@ const SignupForm = () => {
           <Field placeholder="Codigo"     name="codigoPagamento" as={TextField}></Field>
 
           <Button disabled={isSubmitting} type="submit">Submit</Button>
-          <pre>{JSON.stringify(values, null, 2)}</pre>
        </Form>
      )
    }
@@ -42,4 +45,4 @@ const SignupForm = () => {
  );
 };
 
-export default SignupForm
+export default BillForm
