@@ -6,8 +6,8 @@ import './UploadBill.css'
 function UploadBill() {
   return (
     <div className="containerUpload">
-      <BillForm></BillForm>
-      <UploadFile></UploadFile>
+      <BillForm className="billForm"></BillForm>
+      <UploadFile className="uploadFile"></UploadFile>
     </div>
   )
 }

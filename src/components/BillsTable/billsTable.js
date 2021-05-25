@@ -27,11 +27,18 @@ const useStyles = makeStyles({
   },
 });
 
-function removeBill(id) {
-  console.log(`remove ${id}`);
-}
 export default function BasicTable() {
   const [bills, setBills] = useState([]);
+
+
+  function removeBill(id) {
+    console.log(`remove ${id}`);
+    let url = `http://127.0.0.1:8000/api/bill/${id}`
+    axios
+      .delete(url)
+      .then((res) => {setBills(res.data)})
+  }
+
   useEffect(() => {
   axios
     .get('http://127.0.0.1:8000/api/bills/')

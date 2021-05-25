@@ -24,13 +24,14 @@ function FileUpload(){
 	const handleSubmission = () => {
 		const formData = new FormData();
     const url = "http://localhost:8000/api/boleto/"
-
+  
 		formData.append('File', selectedFile);
 
     axios.post(url, formData)
-			.then((response) => response.json())
 			.then((result) => {
 				console.log('Success:', result);
+        alert('Boleto enviado com sucesso!')
+        window.location.href='/'
 			})
 			.catch((error) => {
 				console.error('Error:', error);
@@ -57,8 +58,8 @@ function FileUpload(){
       ) : (
         <p>Nenhum arquivo selecionado :(</p>
       )}
-
-      <Button className="sendButton" variant="contained" color="primary">
+ 
+      <Button className="sendButton" onClick={handleSubmission} variant="contained" color="primary">
         Enviar
       </Button>
 		</div>

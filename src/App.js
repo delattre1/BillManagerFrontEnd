@@ -1,25 +1,21 @@
-import Bill from "./components/Bill/";
-import UploadBill   from "./components/UploadBill/";
-import "./App.css";
-import axios from "axios";
-import { useEffect, useState } from "react";
 import React from "react";
 
-function App() {
-  const [bills, setBills] = useState([]);
+import {Route, BrowserRouter as Router, Switch} from "react-router-dom";
+import Home from './Pages/Home';
+import Form from './Pages/Form';
+import NotFoundPage from './Pages/NotFoundPage';
+import FluxoCaixa from './Pages/FluxoCaixa';
 
-  useEffect(() => {
-  axios
-    .get("http://localhost:8000/api/bills/")
-    .then((res) => setBills(res.data));
-  }, []);
-  
-  
+function App() {
   return (
-    <div>
-      <UploadBill></UploadBill>
-      <Bill bills={bills}></Bill>
-    </div>
+    <Router>
+      <Switch>
+        <Route path="/" exact component={Home}/>
+        <Route path="/add" component={Form}/>
+        <Route path="/fluxoCaixa" component={FluxoCaixa}/>
+        <Route path="*" component={NotFoundPage}/>
+      </Switch>
+    </Router>
   )
 }
 

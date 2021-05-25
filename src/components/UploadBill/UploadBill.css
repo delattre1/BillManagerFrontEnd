@@ -1,5 +1,13 @@
 .containerUpload {
   display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  flex-direction: column;
+  align-items: center;
+
+  padding: 10rem;
+}
+
+.billForm {
+}
+
+.uploadFile {
 }

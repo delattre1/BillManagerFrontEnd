@@ -18,7 +18,7 @@ const BillForm = () => {
 
   const CustomInputComponent = (props) => (
     <InputMask mask="99/99/9999" value={props.value} onChange={props.onChange}>
-      {(inputProps) => <Input placeholder={props.placeholder} {...inputProps}/>}
+      {(inputProps) => <Input name={props.name} placeholder={props.placeholder} {...inputProps}/>}
     </InputMask>
   );
 
@@ -26,8 +26,6 @@ const BillForm = () => {
    <Formik initialValues={{ empresa: '' , valor: '', vencimento: '', codigoPagamento: ''}} onSubmit={(data, {setSubmitting}) => {
      setSubmitting(true);
      postBill(data);
-     //make async call
-     console.log(data);
      setSubmitting(false);
    }}>
    {({values, isSubmitting}) => (
