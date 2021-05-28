@@ -12,13 +12,7 @@ import { useEffect, useState } from "react";
 
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
-
-function convertDate(date) {
-  var ano  = date.split("-")[0];
-  var mes  = date.split("-")[1];
-  var dia  = date.split("-")[2];
-  return `${dia}/${mes}/${ano}`
-}
+import {convertDate, createTotalColumn} from './utils'; 
 
 const useStyles = makeStyles({
   table: {
@@ -29,34 +23,52 @@ const useStyles = makeStyles({
 export default function BasicTable() {
   const [bills, setBills] = useState([]);
 
-
   function removeBill(id) {
-    console.log(`remove ${id}`);
-    let url = `http://127.0.0.1:8000/api/bill/${id}`
+    let url = `http://127.0.0.1:8000/api/movimentacao/${id}`
     axios
       .delete(url)
-      .then((res) => {setBills(res.data)})
+      .then((res) => {
+        let movs = createTotalColumn(res.data);
+        setBills(movs);
+      })
   }
 
   useEffect(() => {
   axios
     .get('http://127.0.0.1:8000/api/movimentacoes/')
-    .then((res) => {
-      setBills(res.data)
+      .then((res) => {
+        let movs = createTotalColumn(res.data);
+        setBills(movs);
     })
   }, []);
 
-  console.log(bills);
   const classes = useStyles();
+  
+  const TableCellAporte = (props) =>{
+    let table = <TableCell/>;
+    if (props.tipo === "aporte") {
+      table = <TableCell>{props.valor}</TableCell>
+    } 
+    return table;
+  }
 
+  const TableCellDespesa = (props) =>{
+    let table = <TableCell/>;
+    if (props.tipo === "despesa") {
+      table = <TableCell>{props.valor}</TableCell>
+    } 
+    return table;
+  }
+  
   return (
     <TableContainer component={Paper}>
       <Table className={classes.table} aria-label="simple table">
         <TableHead>
           <TableRow>
-            <TableCell>Vencimento</TableCell>
-            <TableCell>Valor     </TableCell>
-            <TableCell>Tipo    </TableCell>
+            <TableCell>Data</TableCell>
+            <TableCell>Aporte    </TableCell>
+            <TableCell>Despesa    </TableCell>
+            <TableCell>Total   </TableCell>
             <TableCell>Remover   </TableCell>
           </TableRow>
         </TableHead>
@@ -66,8 +78,9 @@ export default function BasicTable() {
               <TableCell component="th" scope="row">
                 {convertDate(row.data)}
               </TableCell>
-              <TableCell>R$ {row.valor}</TableCell>
-              <TableCell>   {row.tipo}</TableCell>
+              <TableCellAporte  tipo={row.tipo} valor={row.valor}/>
+              <TableCellDespesa tipo={row.tipo} valor={row.valor}/>
+              <TableCell>{row.totalAtual}</TableCell>
               <TableCell>
               <IconButton aria-label="delete" >
                 <DeleteIcon onClick={(e) => removeBill(row.id, e)}/>
