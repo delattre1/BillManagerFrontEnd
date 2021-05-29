@@ -1,5 +1,4 @@
 import "./bills.css";
-import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -13,13 +12,9 @@ import { useEffect, useState } from "react";
 
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import PictureAsPdfIcon from '@material-ui/icons/PictureAsPdf';
+import {handlePDFDownload, convertDate} from './utils';
 
-function convertDate(date) {
-  var ano  = date.split("-")[0];
-  var mes  = date.split("-")[1];
-  var dia  = date.split("-")[2];
-  return `${dia}/${mes}/${ano}`
-}
 
 const useStyles = makeStyles({
   table: {
@@ -29,7 +24,7 @@ const useStyles = makeStyles({
 
 export default function BasicTable() {
   const [bills, setBills] = useState([]);
-
+  const classes = useStyles();
 
   function removeBill(id) {
     console.log(`remove ${id}`);
@@ -47,8 +42,6 @@ export default function BasicTable() {
     })
   }, []);
 
-  console.log(bills);
-  const classes = useStyles();
 
   return (
     <TableContainer component={Paper}>
@@ -72,7 +65,9 @@ export default function BasicTable() {
               <TableCell>   {row.empresa}</TableCell>
               <TableCell>R$ {row.valor}</TableCell>
               <TableCell>   {row.codigoPagamento}</TableCell>
-              <TableCell>   {row.boleto}</TableCell>
+              <TableCell>
+                <PictureAsPdfIcon onClick={(e) => handlePDFDownload(row.id,e)}/> 
+              </TableCell>
               <TableCell>
               <IconButton aria-label="delete" >
                 <DeleteIcon onClick={(e) => removeBill(row.id, e)}/>
