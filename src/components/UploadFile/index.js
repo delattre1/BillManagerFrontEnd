@@ -1,4 +1,5 @@
-// Reference: https://www.pluralsight.com/guides/uploading-files-with-reactjs
+
+// Referencias: https://www.pluralsight.com/guides/uploading-files-with-reactjs
 import React, {useState, useRef} from 'react';
 import axios from 'axios';
 import './form.css'
