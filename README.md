@@ -1,6 +1,6 @@
 # Bill Manager
 
-#### Live version: https://intense-sierra-39653.herokuapp.com/ (It may take a while to start dynos)
+#### Live version: https://intense-sierra-39653.herokuapp.com/ (O primeiro acesso demora um pouco até o heroku ligar os dynos)
 
 ## Instructions
 
